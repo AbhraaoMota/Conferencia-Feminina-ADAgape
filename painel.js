@@ -35,7 +35,7 @@ function verificarSenha() {
     const senhaDigitada = document.getElementById('input-senha').value;
     const erroSenha = document.getElementById('erro-senha');
     
-    if (senhaDigitada === "1234") { // Troque "1234" pela sua senha desejada
+    if (senhaDigitada === "AD@2026") { // Troque "1234" pela sua senha desejada
         document.getElementById('modal-senha').classList.remove('active');
         carregarPainel(); 
     } else {
