@@ -31,17 +31,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// NOVA FUNÇÃO DE SENHA ESTILIZADA
 function verificarSenha() {
     const senhaDigitada = document.getElementById('input-senha').value;
     const erroSenha = document.getElementById('erro-senha');
     
     if (senhaDigitada === "1234") { // Troque "1234" pela sua senha desejada
         document.getElementById('modal-senha').classList.remove('active');
-        carregarPainel(); // Carrega os dados apenas depois que acertar a senha
+        carregarPainel(); 
     } else {
-        erroSenha.style.display = 'block'; // Mostra a mensagem de erro
-        document.getElementById('input-senha').value = ''; // Limpa o campo
+        erroSenha.style.display = 'block'; 
+        document.getElementById('input-senha').value = ''; 
     }
 }
 
@@ -51,35 +50,32 @@ function limparBusca() {
     carregarPainel();
 }
 
-// Transformado em função Async para esperar a nuvem
 async function carregarPainel(filtroTexto = '') {
     const container = document.getElementById('container-cards');
-    if(!container) return; // evita erro se for chamado sem estar no painel
+    if(!container) return; 
     
     container.innerHTML = '<p style="text-align:center; width: 100%; font-size: 1.2rem;">Carregando dados da nuvem...</p>'; 
 
     try {
-        // Puxa as inscrições diretamente da coleção "inscricoes" no Firebase
         const snapshot = await db.collection("inscricoes").get();
         let inscricoes = [];
         
         snapshot.forEach(doc => {
-            // Guarda o ID do documento do Firebase junto com os dados para usarmos depois
             inscricoes.push({ docId: doc.id, ...doc.data() });
         });
 
-        // Ordena pela numeração do ID (ordem de cadastro)
+        // Ordena pela numeração do ID
         inscricoes.sort((a, b) => a.id - b.id);
 
-        // Se houver algum filtro digitado, filtra pelo CÓDIGO ou pelo CPF
         if (filtroTexto !== '') {
             inscricoes = inscricoes.filter(inscricao => 
                 inscricao.codigo.includes(filtroTexto) || 
-                inscricao.cpf.includes(filtroTexto)
+                inscricao.cpf.includes(filtroTexto) ||
+                inscricao.nome.toLowerCase().includes(filtroTexto.toLowerCase()) // Permite buscar por nome também
             );
         }
 
-        container.innerHTML = ''; // Limpa o aviso de "carregando"
+        container.innerHTML = ''; 
 
         if (inscricoes.length === 0) {
             if (filtroTexto !== '') {
@@ -93,20 +89,17 @@ async function carregarPainel(filtroTexto = '') {
         inscricoes.forEach((inscricao) => {
             const card = document.createElement('div');
             
-            // Define a classe CSS com base no status salvo
             let classeStatus = '';
             if (inscricao.status === 'Aprovado') classeStatus = 'aprovado';
             if (inscricao.status === 'Rejeitado') classeStatus = 'rejeitado';
             
             card.className = `gestor-card ${classeStatus}`;
 
-            // <--- LÓGICA DO LIVRO E DO ID --->
             let idExibicao = inscricao.id ? inscricao.id : 'N/A';
             let badgeLivro = (inscricao.id && inscricao.id <= 50 && inscricao.status === 'Aprovado') 
                 ? `<span style="background-color: #900C3F; color: white; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; margin-left: 10px; font-weight: bold;"><i class="fa-solid fa-gift"></i> Ganhou Livro!</span>` 
                 : '';
 
-            // <--- LÓGICA DO HORÁRIO DO CADASTRO --->
             let infoData = inscricao.dataConfirmacao 
                 ? `<p style="margin-top: 10px; font-size: 0.85rem; color: #555;"><i class="fa-regular fa-clock"></i> <strong>Cadastrado em:</strong> ${inscricao.dataConfirmacao}</p>` 
                 : '';
@@ -127,9 +120,10 @@ async function carregarPainel(filtroTexto = '') {
                 <div class="codigo-destaque">#${inscricao.codigo}</div>
                 
                 <div class="acoes-gestor">
-                    <!-- Passando o docId do Firebase para facilitar a atualização -->
-                    <button class="btn-pagar btn-aprovar" onclick="atualizarStatus('${inscricao.docId}', 'Aprovado')">PG Realizado</button>
-                    <button class="btn-pagar btn-rejeitar" onclick="atualizarStatus('${inscricao.docId}', 'Rejeitado')">PG Não Realizado</button>
+                    <button class="btn-pagar btn-aprovar" onclick="atualizarStatus('${inscricao.docId}', 'Aprovado')">Aprovar</button>
+                    <button class="btn-pagar btn-rejeitar" onclick="atualizarStatus('${inscricao.docId}', 'Rejeitado')">Rejeitar</button>
+                    <!-- NOVO BOTÃO DE EXCLUIR -->
+                    <button class="btn-pagar btn-excluir" onclick="excluirInscricao('${inscricao.docId}')"><i class="fa-solid fa-trash"></i> Excluir</button>
                 </div>
             `;
             
@@ -142,20 +136,105 @@ async function carregarPainel(filtroTexto = '') {
     }
 }
 
-// Função de atualização alterada para usar o Firestore
 async function atualizarStatus(docId, novoStatus) {
     try {
-        // Atualiza o documento específico na nuvem usando o docId
         await db.collection("inscricoes").doc(docId).update({
             status: novoStatus
         });
         
-        // Mantém a tela filtrada se o gestor ainda estiver com algo digitado na busca, e recarrega os dados
         const termoBusca = document.getElementById('input-busca').value;
         carregarPainel(termoBusca);
-
     } catch (erro) {
         console.error("Erro ao atualizar status: ", erro);
         alert("Ocorreu um erro ao atualizar o status no banco de dados.");
+    }
+}
+
+// --- NOVA FUNÇÃO DE EXCLUIR INSCRIÇÃO ---
+async function excluirInscricao(docId) {
+    // Pede confirmação antes de apagar
+    const confirmacao = confirm("Tem certeza absoluta que deseja excluir esta inscrição? Esta ação não pode ser desfeita.");
+    
+    if (confirmacao) {
+        try {
+            await db.collection("inscricoes").doc(docId).delete();
+            alert("Inscrição excluída com sucesso!");
+            
+            // Recarrega o painel após apagar
+            const termoBusca = document.getElementById('input-busca').value;
+            carregarPainel(termoBusca);
+        } catch (erro) {
+            console.error("Erro ao excluir inscrição: ", erro);
+            alert("Ocorreu um erro ao excluir a inscrição do banco de dados.");
+        }
+    }
+}
+
+// --- NOVA FUNÇÃO DE GERAR PDF ---
+async function gerarPDF() {
+    try {
+        // Mostra que está carregando enquanto baixa do Firebase
+        const btnPdf = document.querySelector('button[onclick="gerarPDF()"]');
+        const textoOriginalBotao = btnPdf.innerHTML;
+        btnPdf.innerHTML = "Gerando PDF...";
+        
+        // Puxa as informações da nuvem
+        const snapshot = await db.collection("inscricoes").get();
+        let inscricoes = [];
+        snapshot.forEach(doc => inscricoes.push(doc.data()));
+        
+        // Ordena as inscrições por ID numérico
+        inscricoes.sort((a, b) => a.id - b.id);
+
+        // Prepara os dados da tabela
+        let linhasTabela = [];
+        inscricoes.forEach(inc => {
+            // Verifica se a pessoa ganhou o livro (ID de 1 a 50 E status Aprovado)
+            let ganhouLivro = (inc.id && inc.id <= 50 && inc.status === 'Aprovado') ? 'Sim' : 'Não';
+            
+            linhasTabela.push([
+                inc.id || '-',
+                inc.nome,
+                inc.cpf,
+                inc.telefone,
+                inc.status,
+                ganhouLivro
+            ]);
+        });
+
+        // Configuração do PDF usando jsPDF
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // Título do PDF
+        doc.setFontSize(16);
+        doc.setTextColor(144, 12, 63); // Cor var(--text-color) do seu site
+        doc.text("Lista de Inscrições - Conferência de Mulheres", 14, 15);
+        
+        // Adiciona a Data de Geração
+        doc.setFontSize(10);
+        doc.setTextColor(100, 100, 100);
+        doc.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR')}`, 14, 22);
+
+        // Cria a Tabela
+        doc.autoTable({
+            startY: 28,
+            head: [['ID', 'Nome', 'CPF', 'Telefone', 'Status', 'Ganhou Livro?']],
+            body: linhasTabela,
+            headStyles: { fillColor: [144, 12, 63], textColor: [255, 255, 255] },
+            alternateRowStyles: { fillColor: [255, 240, 245] }, // Cor var(--bg-color) suave
+            styles: { fontSize: 9 }
+        });
+
+        // Salva e Baixa o PDF
+        doc.save("inscricoes-conferencia.pdf");
+        
+        // Restaura o botão
+        btnPdf.innerHTML = textoOriginalBotao;
+
+    } catch (erro) {
+        console.error("Erro ao gerar PDF: ", erro);
+        alert("Ocorreu um erro ao gerar a lista em PDF. Verifique a internet e tente novamente.");
+        document.querySelector('button[onclick="gerarPDF()"]').innerHTML = '<i class="fa-solid fa-file-pdf"></i> Gerar PDF';
     }
 }
