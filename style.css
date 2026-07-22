@@ -1,0 +1,340 @@
+:root {
+    --bg-color: #FFF0F5; /* Verde das imagens */
+    --card-bg: #FFFFFF; /* Creme dos cards */
+    --text-color: #900C3F;
+    --border-color: #FFB6C1;
+    --shadow: 0 10px 40px rgba(255,105,180,0.15);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-x: hidden;
+}
+.container {
+    display: flex;
+    width: 100%;
+    max-width: 1100px;
+    align-items: center;
+    justify-content: space-around;
+    gap: 40px;
+    flex-wrap: wrap; 
+}
+
+/* Branding (Lado Esquerdo) */
+.branding {
+    flex: 1;
+    min-width: 280px;
+    text-align: center;
+}
+
+.logo-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.arch-shape {
+    border: 1px solid var(--text-color);
+    padding: 25px 20px;
+    border-radius: 60px 60px 0 0;
+    font-size: 28px;
+}
+
+h1 {
+    font-weight: 300;
+    letter-spacing: 4px;
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    line-height: 1.2;
+}
+
+.subtitle {
+    margin-top: 20px;
+    font-size: 0.75rem;
+    letter-spacing: 6px;
+}
+
+/* Área de Conteúdo (Cards) */
+.content-area {
+    width: 100%;
+    max-width: 420px;
+    flex: 1;
+}
+
+.card {
+    background-color: var(--card-bg);
+    padding: clamp(30px, 8vw, 50px);
+    box-shadow: var(--shadow);
+    display: none;
+    flex-direction: column;
+    border-radius: 4px;
+    animation: fadeIn 0.4s ease;
+}
+
+.card.active {
+    display: flex;
+}
+
+.footer-gestor {
+    width: 100%;
+    text-align: center;
+    margin-top: 30px;
+    display: block; 
+    position: relative;
+    z-index: 10;
+}
+
+.footer-gestor a {
+    color: #5a5d54;
+    font-size: 0.9rem;
+    text-decoration: none;
+    opacity: 0.7;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Formulários e Botões */
+
+/* UPDATE: Adicionando "select" junto com os inputs para compartilhar o estilo base */
+input, select {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    padding: 14px;
+    margin-bottom: 20px;
+    color: var(--text-color);
+    font-size: 1rem;
+    outline: none;
+    border-radius: 4px;
+}
+
+/* UPDATE: Estilização customizada da setinha do Select */
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23900C3F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 16px;
+    cursor: pointer;
+}
+
+select option {
+    color: var(--text-color);
+    background-color: var(--card-bg);
+}
+
+.menu-links button {
+    width: 100%;
+    border: none;
+    padding: 14px;
+    border-radius: 4px;
+    background-color: #FFB6C1;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.menu-links button:hover {
+    filter: brightness(0.9);
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-alt, .btn-action {
+    flex: 1;
+    border: none;
+    padding: 12px;
+    border-radius: 4px;
+    background-color: #FFB6C1;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.btn-action {
+    background-color: #FF69B4;
+    font-weight: bold;
+}
+
+.btn-action:hover, .btn-alt:hover {
+    filter: brightness(0.9);
+}
+
+.social-icons {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.social-icons i {
+    font-size: 1.8rem;
+    color: var(--text-color);
+}
+
+.opcoes-pagamento {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.opcoes-pagamento h3 {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.btn-pagar {
+    width: 100%;
+    background-color: var(--text-color); 
+    color: var(--card-bg); 
+    border: none;
+    padding: 14px;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-pagar:hover {
+    background-color: #42443d; 
+    transform: translateY(-2px); 
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    display: none; 
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    border-top: 5px solid var(--text-color); 
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0);
+}
+
+.modal-icon {
+    font-size: 3rem;
+    color: var(--text-color);
+    margin-bottom: 15px;
+}
+
+#texto-aviso {
+    font-size: 1.05rem;
+    color: #444;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+/* Estilização da área da preletora */
+.preletora-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.preletora-label {
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #666; /* Ajuste a cor conforme a identidade visual do seu site */
+    margin-bottom: 8px;
+}
+
+.foto-preletora {
+    width: 120px;   /* Defina o tamanho da bolinha (largura) */
+    height: 120px;  /* Defina o tamanho da bolinha (altura) de forma igual */
+    border-radius: 50%; /* Deixa a imagem redonda */
+    object-fit: cover;  /* Evita que a foto fique distorcida */
+    border: 3px solid #fff; /* Opcional: uma bordinha branca ao redor */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Opcional: sombra leve */
+    margin-bottom: 10px;
+}
+
+.nome-preletora {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Espaçamento do texto atualizado */
+.descricao-evento {
+    line-height: 1.6;
+    margin-top: 20px;
+}
+
+.descricao-evento p {
+    margin-bottom: 15px;
+}
+
+/* MEDIA QUERY PARA TELEMÓVEIS */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .branding {
+        margin-bottom: 20px;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+}
