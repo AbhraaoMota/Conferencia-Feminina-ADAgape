@@ -187,8 +187,10 @@ async function registrarPagamentoFinal(metodo) {
             dataConfirmacao: dataFormatada 
         };
 
-        // Salvando no Firebase
-        await db.collection("inscricoes").add(novaInscricao);
+        // Salvando no Firebase com etiqueta personalizada (Nome - CPF)
+        const nomeDaEtiqueta = `${nome} - ${cpf}`;
+        await db.collection("inscricoes").doc(nomeDaEtiqueta).set(novaInscricao);
+        
         return codigoGerado;
     } catch (erro) {
         console.error("Erro ao salvar no banco de dados: ", erro);
