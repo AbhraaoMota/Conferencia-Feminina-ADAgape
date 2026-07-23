@@ -24,14 +24,14 @@ body {
     padding: 20px;
     overflow-x: hidden;
 }
+
 .container {
     display: flex;
+    flex-direction: column; /* Alterado para empilhar as seções corretamente */
     width: 100%;
     max-width: 1100px;
     align-items: center;
-    justify-content: space-around;
-    gap: 40px;
-    flex-wrap: wrap; 
+    gap: 20px;
 }
 
 /* Branding (Lado Esquerdo) */
@@ -69,10 +69,12 @@ h1 {
 }
 
 /* Área de Conteúdo (Cards) */
-.content-area {
+/* CORREÇÃO: Aplicado o limite de 420px ao telas-container, e não na section inteira */
+.telas-container {
     width: 100%;
     max-width: 420px;
     flex: 1;
+    margin: 0 auto; 
 }
 
 .card {
@@ -81,7 +83,7 @@ h1 {
     box-shadow: var(--shadow);
     display: none;
     flex-direction: column;
-    border-radius: 4px;
+    border-radius: 25px; 
     animation: fadeIn 0.4s ease;
 }
 
@@ -111,8 +113,6 @@ h1 {
 }
 
 /* Formulários e Botões */
-
-/* UPDATE: Adicionando "select" junto com os inputs para compartilhar o estilo base */
 input, select {
     width: 100%;
     background: transparent;
@@ -125,7 +125,6 @@ input, select {
     border-radius: 4px;
 }
 
-/* UPDATE: Estilização customizada da setinha do Select */
 select {
     appearance: none;
     -webkit-appearance: none;
@@ -287,24 +286,25 @@ select option {
     align-items: center;
     margin: 20px 0;
     text-align: center;
+    min-width: 250px;
 }
 
 .preletora-label {
     font-size: 14px;
     font-weight: bold;
     letter-spacing: 1px;
-    color: #666; /* Ajuste a cor conforme a identidade visual do seu site */
+    color: #666; 
     margin-bottom: 8px;
 }
 
 .foto-preletora {
-    width: 120px;   /* Defina o tamanho da bolinha (largura) */
-    height: 120px;  /* Defina o tamanho da bolinha (altura) de forma igual */
-    border-radius: 50%; /* Deixa a imagem redonda */
-    object-fit: cover;  /* Evita que a foto fique distorcida */
-    border: 3px solid #fff; /* Opcional: uma bordinha branca ao redor */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Opcional: sombra leve */
-    margin-bottom: 10px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #f0f0f0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    margin-bottom: 15px;
 }
 
 .nome-preletora {
@@ -313,28 +313,193 @@ select option {
     color: #333;
 }
 
-/* Espaçamento do texto atualizado */
 .descricao-evento {
     line-height: 1.6;
     margin-top: 20px;
 }
 
 .descricao-evento p {
+    line-height: 1.8;
+    font-size: 1.05rem;
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+.header-section {
+    display: flex;
+    flex-direction: row; 
+    align-items: center; 
+    justify-content: center;
+    gap: 20px; 
+    width: 100%;
+    padding: 15px; 
+}
+
+.frase-destaque {
+    padding: 20px 20px;
+    text-align: center;
+}
+
+.frase-destaque p {
+    font-size: 2rem; 
+    line-height: 1.3; 
+    margin: 0; 
+}
+
+.preletora-section {
+    padding: 20px 20px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.bolao-branco {
+    background-color: #ffffff;
+    border-radius: 40px; 
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08); 
+    padding: 40px;
+    display: flex;
+    flex-direction: row; 
+    align-items: center; 
+    gap: 40px; 
+    max-width: 900px; 
+    width: 100%;
+}
+
+.preletora-info {
+    flex: 1; 
+}
+
+.preletora-info h3 {
+    margin-top: 0;
     margin-bottom: 15px;
 }
 
-/* MEDIA QUERY PARA TELEMÓVEIS */
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-        justify-content: center;
+.content-area {
+    display: flex;
+    flex-direction: row; 
+    justify-content: space-between;
+    align-items: flex-start; 
+    gap: 40px; 
+    max-width: 1100px; 
+    margin: 0 auto; 
+    padding: 20px 20px;
+    width: 100%;
+}
+
+.descricao-evento, .telas-container {
+    flex: 1; 
+    width: 100%;
+}
+
+.info-evento-fixa {
+    max-width: 1100px; 
+    margin: 20px auto; 
+    padding: 40px;
+    background-color: #ffffff; 
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); 
+    width: 100%;
+}
+
+.info-evento-fixa h3 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+}
+
+.info-grid {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    align-items: center;
+}
+
+.info-texto {
+    flex: 1; 
+}
+
+.info-texto p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 12px;
+}
+
+.info-texto p i {
+    width: 25px; 
+    color: var(--text-color); 
+}
+
+.info-mapa {
+    flex: 1; 
+    width: 100%;
+}
+
+.info-mapa iframe {
+    border-radius: 12px; 
+    width: 100%; 
+}
+
+/* =========================================
+   MEDIA QUERIES PARA RESPONSIVIDADE
+========================================= */
+
+/* Para Tablets (Telas até 992px) */
+@media (max-width: 992px) {
+    .content-area {
+        flex-direction: column; /* Coloca o texto em cima e o formulário embaixo */
+        align-items: center;
+        gap: 30px;
     }
     
-    .branding {
-        margin-bottom: 20px;
+    .bolao-branco {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px;
+    }
+
+    .info-grid {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+/* Para Celulares (Telas até 768px) */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .header-section {
+        flex-direction: column;
+        text-align: center;
     }
 
     h1 {
-        font-size: 1.6rem;
+        font-size: 1.5rem; /* Fonte menor para caber na tela */
+    }
+
+    .frase-destaque p {
+        font-size: 1.5rem;
+    }
+
+    .bolao-branco {
+        border-radius: 25px;
+        padding: 25px 15px;
+        gap: 15px;
+    }
+    
+    .foto-preletora {
+        width: 130px;
+        height: 130px;
+    }
+
+    .card {
+        padding: 25px 15px;
+    }
+
+    .info-evento-fixa {
+        padding: 25px 15px;
+        margin: 20px 0;
     }
 }
