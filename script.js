@@ -39,7 +39,7 @@ const btnConfirmarCartao = document.getElementById('btn-confirmar-cartao');
 let inscricaoJaEnviada = false;
 
 // 2. Links de Pagamento
-const LINK_CARTAO = "https://link.infinitepay.io/abhraao_wniston/VC1D-2dHpuwC7Qp-70,00"; 
+const LINK_CARTAO = "https://link.infinitepay.io/abhraao_wniston/VC1D-qe1vEHLDV7-70,00"; 
 
 // --- FUNÇÕES DO NOVO AVISO CUSTOMIZADO ---
 let avisoCallback = null;
