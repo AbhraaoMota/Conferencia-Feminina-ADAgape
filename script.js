@@ -39,7 +39,7 @@ const btnConfirmarCartao = document.getElementById('btn-confirmar-cartao');
 let inscricaoJaEnviada = false;
 
 // 2. Links de Pagamento
-const LINK_CARTAO = "https://link.infinitepay.io/abhraao_wniston/VC1D-qe1vEHLDV7-70,00"; 
+const LINK_CARTAO = ""; 
 
 // --- FUNÇÕES DO NOVO AVISO CUSTOMIZADO ---
 let avisoCallback = null;
@@ -227,7 +227,6 @@ btnConfirmarCartao.addEventListener('click', async () => {
     const codigo = await registrarPagamentoFinal('Cartão');
     
     if (codigo) {
-        window.open(LINK_CARTAO, '_blank');
         exibirTelaSucesso(codigo);
     } else {
         inscricaoJaEnviada = false;
